@@ -1,10 +1,36 @@
 //  BUDGET CONTROLLER
-let budgetController = (function() {
-    //CODE
+let budgetController = (() => {
+//Create a function constructors
+    let Expense = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    };    
+
+    let Income = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    };
+    
+    let expensesCollection = [];
+    let incomesCollection = [];
+    let summedExpenses = 0;
+
+    let allData = {
+        allItems: {
+            expenses: [],
+            incomes: []
+        },
+        totals: {
+            expenses: 0,
+            incomes: 0
+        }
+    }
 })();
 
 //  UI CONTROLLER
-let UIController = (function() {
+let UIController = (() => {
 
 /* Object to save shortcuts to the DOM classes into variables
 Making it easier to dynamically change and work around them */
@@ -35,7 +61,14 @@ Making it easier to dynamically change and work around them */
 
 //  GLOBAL APP CONTROLLER
 let controller = (function(budgetControl, UIControl) {
+    let eventListenersBox = () => {
 
+        let DOM = UIControl.getDOMVariables();
+
+        document.querySelector(DOM.buttonInput).addEventListener('click', addItemControl);
+
+        document.addEventListener('keypress', addItemControl);
+    };
     //Create a variable that will evoke the method that makes the DOMVariables accessible
     let DOM = UIControl.getDOMVariables();
 
@@ -47,9 +80,15 @@ let controller = (function(budgetControl, UIControl) {
         // 3. ADD ITEM TO THE UI
         // 4. CALCULATE THE BUDGET
         // 5. DISPLAY THE BUDGET IN THE UI
-    }
+    };
 
-    document.querySelector(DOM.buttonInput).addEventListener('click', addItemControl);
-
-    document.addEventListener('keypress', addItemControl);
+    return {
+// Create an initialization function to start the event listeners        
+        init : () => {
+            eventListenersBox();
+        }
+    };
 })(budgetController, UIController);
+
+// invoke the initialization function in the global scope to get the event listeners started
+controller.init();
