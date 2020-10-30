@@ -3,20 +3,40 @@
 //  BUDGET CONTROLLER
 let budgetController = (() => {
 
-    class Expense {
-        constructor(id, description, value) {
+    let Expense = function(id, description, value) {
             this.id = id;
             this.description = description;
             this.value = value;
-        }
-    }    
+            this.percentage = -1;
+        }    
 
-    class Income {
-        constructor(id, description, value) {
+    Expense.prototype.calcPercentage = function(totalIncome) {
+        if (totalIncome > 0) {
+            this.percentage = Math.round((this.value / totalIncome) *100);
+        } else  {
+            this.percentage = -1;
+        }
+    }
+
+    Expense.prototype.getPercentage = () => {
+        return this.percentage;
+        }
+
+    let Income = function(id, description, value) {
             this.id = id;
             this.description = description;
             this.value = value;
+        };
+
+        let calculateTotal = function(type) {
+            let sum = 0;
+            data.allItems[type].forEach((cur) => {
+                sum += cur.value;
+            });
+            data.totals[type] = sum;
         }
+
+
     }
     
     let expensesCollection = [];
@@ -137,8 +157,9 @@ let controller = (function(budgetCtrl, UICtrl) {
         // 1. GET THE FIELD INPUT DATA
         input = UICtrl.getInput();
      // 2. ADD THE ITEM TO THE BUDGET CONTROLLER
-        newItem = budgetCtrl.addItem(input.type, input.des, input.val);  
+        newItem = budgetCtrl.addItem(input.type, input.description, input.value);  
      // 3. ADD ITEM TO THE UI
+        UICtrl.addListItem(newItem, input.type);
      // 4. CALCULATE THE BUDGET
      // 5. DISPLAY THE BUDGET IN THE UI
     };
@@ -146,7 +167,8 @@ let controller = (function(budgetCtrl, UICtrl) {
     return {
 // Create an initialization function to start the event listeners        
         init : () => {
-            eventListenersBox();
+            console.log("Application started");
+            setupEventListeners();
         }
     };
 })(budgetController, UIController);
