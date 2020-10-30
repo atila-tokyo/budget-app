@@ -111,7 +111,7 @@ Making it easier to dynamically change and work around them */
         /*Create an object with a function that turns the DOMVariables object
         accessible from within other closures in the code */
         getDOMVariables: () => {
-            return DOMVariables;
+            return DOMStrings;
             }
         }
     }
@@ -120,24 +120,24 @@ Making it easier to dynamically change and work around them */
 
 /*******************************************************************************************************/
 //  GLOBAL APP CONTROLLER
-let controller = (function(budgetControl, UIControl) {
+let controller = (function(budgetCtrl, UICtrl) {
     let eventListenersBox = () => {
 
-        let DOM = UIControl.getDOMVariables();
+        let DOM = UICtrl.getDOMVariables();
 
-        document.querySelector(DOM.buttonInput).addEventListener('click', addItemControl);
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
-        document.addEventListener('keypress', addItemControl);
+        document.addEventListener('keypress', ctrlAddItem);
     };
     //Create a variable that will evoke the method that makes the DOMVariables accessible
 
 
-    let addItemControl = () => {
+    let ctrlAddItem = () => {
      let input, newItem;
         // 1. GET THE FIELD INPUT DATA
         input = UICtrl.getInput();
      // 2. ADD THE ITEM TO THE BUDGET CONTROLLER
-        newItem = budgetController.addItem(input.type, input.designation, input.val);  
+        newItem = budgetCtrl.addItem(input.type, input.des, input.val);  
      // 3. ADD ITEM TO THE UI
      // 4. CALCULATE THE BUDGET
      // 5. DISPLAY THE BUDGET IN THE UI
